@@ -1,0 +1,85 @@
+/* ========== EventHub – Custom Styles ========== */
+
+/* ---- Base ---- */
+body {
+  background-color: #f8f9fc;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ---- Navbar ---- */
+.navbar-brand {
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+}
+
+/* ---- Cards ---- */
+.card {
+  border-radius: 12px;
+}
+
+.event-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ---- Text clamp for event descriptions ---- */
+.text-truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- Admin table ---- */
+.table th {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+/* ---- Breadcrumb ---- */
+.breadcrumb-item a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Registration ID badge ---- */
+.font-monospace {
+  font-size: 0.92em;
+}
+
+/* ---- Success page icon ---- */
+.bi-check-circle-fill.text-success {
+  filter: drop-shadow(0 0 8px rgba(25, 135, 84, 0.35));
+}
+
+/* ---- Footer ---- */
+footer {
+  font-size: 0.85rem;
+}
+
+/* ---- Responsive table scroll hint ---- */
+.table-responsive {
+  border-radius: 0 0 12px 12px;
+}
+
+/* ---- Form controls focus ---- */
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.2);
+}
+
+/* ---- Stat cards ---- */
+.card .display-5 {
+  line-height: 1.1;
+}

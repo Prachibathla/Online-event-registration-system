@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="fw-bold mb-0">
+    <i class="bi bi-speedometer2 text-primary me-2"></i>Dashboard
+  </h2>
+  <span class="text-muted small">Welcome, {{ session.admin_username }}</span>
+</div>
+
+<!-- Stat cards -->
+<div class="row g-4 mb-4">
+  <div class="col-sm-4">
+    <div class="card shadow-sm border-0 text-center h-100">
+      <div class="card-body py-4">
+        <div class="display-5 fw-bold text-primary">{{ total_events }}</div>
+        <div class="text-muted mt-1"><i class="bi bi-calendar3 me-1"></i>Total Events</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card shadow-sm border-0 text-center h-100">
+      <div class="card-body py-4">
+        <div class="display-5 fw-bold text-success">{{ total_regs }}</div>
+        <div class="text-muted mt-1"><i class="bi bi-person-check me-1"></i>Total Registrations</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card shadow-sm border-0 text-center h-100">
+      <div class="card-body py-4">
+        <div class="display-5 fw-bold text-info">{{ total_seats }}</div>
+        <div class="text-muted mt-1"><i class="bi bi-people me-1"></i>Total Seats</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Upcoming Events -->
+  <div class="col-md-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white border-0 pt-3">
+        <h5 class="fw-semibold mb-0">
+          <i class="bi bi-calendar-event text-primary me-2"></i>Upcoming Events
+        </h5>
+      </div>
+      <div class="card-body p-0">
+        {% if upcoming_events %}
+        <div class="list-group list-group-flush">
+          {% for e in upcoming_events %}
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <div class="fw-semibold">{{ e.title }}</div>
+                <div class="small text-muted">{{ e.event_date }} &mdash; {{ e.venue or 'TBD' }}</div>
+              </div>
+              <span class="badge bg-primary rounded-pill ms-2">
+                {{ e.filled }} / {{ e.max_seats }}
+              </span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted p-3">No upcoming events.</p>
+        {% endif %}
+      </div>
+      <div class="card-footer bg-white border-0 pb-3">
+        <a href="{{ url_for('admin_events') }}" class="btn btn-sm btn-outline-primary">
+          Manage Events <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Registrations -->
+  <div class="col-md-6">
+    <div class="card shadow-sm border-0 h-100">
+      <div class="card-header bg-white border-0 pt-3">
+        <h5 class="fw-semibold mb-0">
+          <i class="bi bi-clock-history text-primary me-2"></i>Recent Registrations
+        </h5>
+      </div>
+      <div class="card-body p-0">
+        {% if recent_regs %}
+        <div class="list-group list-group-flush">
+          {% for r in recent_regs %}
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <div>
+                <div class="fw-semibold">{{ r.name }}</div>
+                <div class="small text-muted">{{ r.event_title }}</div>
+              </div>
+              <span class="font-monospace small text-muted">{{ r.reg_code }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted p-3">No registrations yet.</p>
+        {% endif %}
+      </div>
+      <div class="card-footer bg-white border-0 pb-3">
+        <a href="{{ url_for('admin_registrations') }}" class="btn btn-sm btn-outline-primary">
+          View All <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

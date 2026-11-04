@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Edit Registration{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ url_for('admin_registrations') }}">Registrations</a></li>
+    <li class="breadcrumb-item active">Edit</li>
+  </ol>
+</nav>
+
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white border-0 pt-3">
+        <h4 class="fw-bold mb-0">
+          <i class="bi bi-pencil-square text-warning me-2"></i>Edit Registration
+        </h4>
+        <p class="text-muted small mt-1 mb-0">
+          {{ reg.event_title }} &mdash;
+          <span class="font-monospace">{{ reg.reg_code }}</span>
+        </p>
+      </div>
+      <div class="card-body p-4">
+
+        {% if errors %}
+        <div class="alert alert-danger mb-3">
+          <ul class="mb-0 ps-3">
+            {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" name="name"
+                   value="{{ form.get('name', reg.name) }}" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email</label>
+            <input type="email" class="form-control" value="{{ reg.email }}" disabled />
+            <div class="form-text">Email cannot be changed.</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Phone <span class="text-danger">*</span></label>
+            <input type="tel" class="form-control" name="phone"
+                   value="{{ form.get('phone', reg.phone) }}" required />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">College</label>
+            <input type="text" class="form-control" name="college"
+                   value="{{ form.get('college', reg.college or '') }}" />
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-sm-8">
+              <label class="form-label fw-semibold">Department</label>
+              <input type="text" class="form-control" name="department"
+                     value="{{ form.get('department', reg.department or '') }}" />
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label fw-semibold">Year</label>
+              <select class="form-select" name="year">
+                <option value="">Select</option>
+                {% for y in ['1st Year', '2nd Year', '3rd Year', '4th Year', 'PG / Other'] %}
+                <option value="{{ y }}"
+                  {% if (form.get('year') or reg.year) == y %}selected{% endif %}>
+                  {{ y }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-warning flex-fill">
+              <i class="bi bi-save me-2"></i>Save Changes
+            </button>
+            <a href="{{ url_for('admin_registrations') }}" class="btn btn-outline-secondary flex-fill">
+              Cancel
+            </a>
+          </div>
+        </form>
+
+        <hr class="my-4" />
+        <div class="text-end">
+          <form method="POST" action="{{ url_for('admin_delete', reg_id=reg.id) }}"
+                onsubmit="return confirm('Permanently delete this registration?');">
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-trash me-2"></i>Delete This Registration
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

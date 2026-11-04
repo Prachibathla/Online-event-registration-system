@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Upcoming Events{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2 text-primary"></i>Upcoming Events</h2>
+    <p class="text-muted mt-1 mb-0">Browse and register for events below.</p>
+  </div>
+</div>
+
+{% if enriched %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  {% for item in enriched %}
+  {% set e = item.event %}
+  <div class="col">
+    <div class="card h-100 shadow-sm border-0 event-card">
+      <div class="card-header bg-primary bg-opacity-10 border-0 pt-3 pb-0">
+        <span class="badge {% if item.is_open %}bg-success{% else %}bg-secondary{% endif %} mb-2">
+          {% if item.is_open %}Open{% else %}Closed{% endif %}
+        </span>
+        <h5 class="card-title fw-semibold">{{ e.title }}</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted small mb-2">
+          <i class="bi bi-calendar-date me-1 text-primary"></i>
+          {{ e.event_date }}
+        </p>
+        {% if e.venue %}
+        <p class="text-muted small mb-2">
+          <i class="bi bi-geo-alt me-1 text-primary"></i>
+          {{ e.venue }}
+        </p>
+        {% endif %}
+        {% if e.deadline %}
+        <p class="text-muted small mb-2">
+          <i class="bi bi-alarm me-1 text-warning"></i>
+          Deadline: {{ e.deadline }}
+        </p>
+        {% endif %}
+        <p class="text-muted small mb-3">
+          <i class="bi bi-people me-1 text-primary"></i>
+          {{ item.seats_left }} / {{ e.max_seats }} seats available
+        </p>
+        {% if e.description %}
+        <p class="card-text text-truncate-3">{{ e.description }}</p>
+        {% endif %}
+      </div>
+      <div class="card-footer bg-transparent border-0 pb-3">
+        <a href="{{ url_for('event_detail', event_id=e.id) }}"
+           class="btn btn-outline-primary btn-sm me-2">
+          <i class="bi bi-info-circle me-1"></i>Details
+        </a>
+        {% if item.is_open %}
+        <a href="{{ url_for('register', event_id=e.id) }}"
+           class="btn btn-primary btn-sm">
+          <i class="bi bi-pencil-square me-1"></i>Register
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+  <i class="bi bi-calendar-x display-3 text-muted"></i>
+  <p class="lead mt-3 text-muted">No events are available at the moment. Check back soon!</p>
+</div>
+{% endif %}
+{% endblock %}

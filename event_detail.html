@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Events</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ event.title }}</li>
+  </ol>
+</nav>
+
+<div class="row g-4">
+  <div class="col-md-8">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h2 class="fw-bold mb-0">{{ event.title }}</h2>
+          <span class="badge {% if is_open %}bg-success{% else %}bg-secondary{% endif %} fs-6">
+            {% if is_open %}Registration Open{% else %}Closed{% endif %}
+          </span>
+        </div>
+
+        {% if event.description %}
+        <p class="text-muted">{{ event.description }}</p>
+        {% endif %}
+
+        <hr />
+
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-calendar-event text-primary fs-5 me-3"></i>
+              <div>
+                <div class="small text-muted">Event Date</div>
+                <div class="fw-semibold">{{ event.event_date }}</div>
+              </div>
+            </div>
+          </div>
+          {% if event.venue %}
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-geo-alt text-primary fs-5 me-3"></i>
+              <div>
+                <div class="small text-muted">Venue</div>
+                <div class="fw-semibold">{{ event.venue }}</div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-people text-primary fs-5 me-3"></i>
+              <div>
+                <div class="small text-muted">Seats Available</div>
+                <div class="fw-semibold">{{ seats_left }} / {{ event.max_seats }}</div>
+              </div>
+            </div>
+          </div>
+          {% if event.deadline %}
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-alarm text-warning fs-5 me-3"></i>
+              <div>
+                <div class="small text-muted">Registration Deadline</div>
+                <div class="fw-semibold">{{ event.deadline }}</div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4 text-center">
+        {% if is_open %}
+          <i class="bi bi-check-circle-fill text-success display-4"></i>
+          <p class="mt-2 mb-3 text-muted">Registration is currently open.</p>
+          <a href="{{ url_for('register', event_id=event.id) }}"
+             class="btn btn-primary btn-lg w-100">
+            <i class="bi bi-pencil-square me-2"></i>Register Now
+          </a>
+        {% else %}
+          <i class="bi bi-x-circle-fill text-danger display-4"></i>
+          <p class="mt-2 mb-0 text-muted">{{ reason }}</p>
+        {% endif %}
+
+        <hr class="my-3" />
+
+        <a href="{{ url_for('my_registration') }}" class="btn btn-outline-secondary w-100">
+          <i class="bi bi-search me-2"></i>Look Up My Registration
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
